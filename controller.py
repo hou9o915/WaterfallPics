@@ -22,9 +22,18 @@ def index(page='1'):
         LIMIT 10; ''')
     if  results is not None:
 	   for entry in results:
-        	entries.append({'id':entry.id,'name':entry.img_url})
+        	entries.append({'id':entry.id,'name':entry.img_url,"index":entry.index})
         
     return template("static/template/index.html",entries=entries,pagenavi=page)
+
+
+@app.route('/image/<index:re:[0-9]+>')
+def detail(index):
+    index = int(index)
+
+    entry = Picture.select().where(Picture.index == index).get()
+
+    return template("static/template/detail.html",entry=entry)
 
 
 
