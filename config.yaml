@@ -1,8 +1,6 @@
 uwsgi:
   wsgi-file: ./app.py
   socket: 127.0.0.1:3032
-  workers: 4
-  pythonpath: /Library/Python/2.7/site-packages/
-  pythonpath: /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7
-  pythonpath: /Library/Python/2.7/site-packages/MySQL_python-1.2.4b4-py2.7-macosx-10.8-intel.egg/
   daemonize: logs/a.log
+  plugins: python
+  workers: 4

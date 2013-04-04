@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from lib.bottle import Bottle,request,jinja2_template as template,static_file,debug
+from bottle import Bottle,request,jinja2_template as template,static_file,debug
 import settings
 from models import *
 app = Bottle()
