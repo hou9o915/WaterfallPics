@@ -1,0 +1,97 @@
+{% extends "static/template/base.html" %}
+
+{% block title %}{{ super() }}{% endblock %}
+
+{% block content %}
+<div id="wrapper" class="clearfix">
+	<div id="cate" data-type="index" data-name="index"></div>
+  	<div id="container">
+		{% for entry in entries %}
+		<div id="post-"{{entry.id}} class="post-home items">
+			<div class="post-thumbnail">
+				<a class='img' href='{{entry.name}}'>
+					<img src='{{entry.name}}' width="255" >
+				</a>
+			</div>
+		</div>
+
+		{%endfor%}
+	</div>
+	
+	<div id="pagenavi">
+		{%if pagenavi>1%}
+		<a href="/page/{{ pagenavi-1 }}" class='page-numbers previous'>上一页</a>
+		{% endif %}
+		<span class='page-numbers current'>{{pagenavi}}</span>
+		<a href="/page/{{pagenavi+1}}" class='page-numbers next'>下一页</a>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.masonry.min.js"></script>
+<script src="/static/js/jquery.infinitescroll.min.js"></script>
+
+
+<script type="text/javascript">
+	var $container = $('#container');
+	$container.imagesLoaded(function(){
+  		$container.masonry({
+			itemSelector : '.post-home',
+			isAnimated: false,
+			animationOptions: {
+			duration: 500,
+			easing: 'linear',
+			queue: false
+			}
+  		});
+	});
+
+	                    //无限滚动
+	$container.infinitescroll({
+		navSelector: "#pagenavi",
+		nextSelector: "#pagenavi a.next",
+		itemSelector: ".post-home.items",
+		debug: true,
+		loading: {
+			finishedMsg: "<em>没有更多的图片了</em>",
+			img: '/static/img/ajax-loader.gif'
+		},
+		errorCallback: function() {
+			$('#infscr-loading').animate({opacity: .8},2000).fadeOut('normal');
+		}},
+		function(newElements) {
+			var $newElems = $(newElements).css({opacity:0});
+			$newElems.imagesLoaded(function(){
+				$newElems.animate({opacity: 1});
+				$container.masonry('appended', $newElems, true);
+			})
+		}
+			
+		);
+
+	$("#go-to-top").click(function(){
+		$("html, body").animate({'scrollTop': 0}, 400);
+		return false;
+	});
+		$(window).scroll(function() {
+				var top = $(document).scrollTop();
+                var g = $("#go-to-top");
+                if (top > 300 && g.is(":hidden")) {
+                    g.fadeIn();
+                } else if(top < 300 && g.is(":visible")) {
+                    g.fadeOut();
+                }
+            });
+
+
+
+
+
+                       
+</script>
+
+{% endblock %}

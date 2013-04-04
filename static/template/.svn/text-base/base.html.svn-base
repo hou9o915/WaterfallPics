@@ -1,0 +1,29 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<title>{% block title %}{% endblock %}</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="stylesheet" href="{{settings.URL}}/static/style/style.min.css" type="text/css" media="screen" />
+{% block style %}{% endblock %}
+<style type="text/css">
+.recentcomments a {
+	display: inline !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+</style>
+<script src="{{settings.URL}}static/js/modernizr.min.js"></script>
+</head>
+<body class="home blog">
+{% block header %}{% include 'static/template/header.html' %}{% endblock %}
+{% block content %}{% endblock %}
+{% block footer %}{% include 'static/template/footer.html' %}{% endblock %}
+<script type="text/javascript"></script>
+{% block script %}{% endblock %}
+</body>
+</html>

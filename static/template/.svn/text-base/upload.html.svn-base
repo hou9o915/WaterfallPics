@@ -1,0 +1,22 @@
+{% extends "static/template/base.html" %}
+
+{% block title %}{{ super() }}{% endblock %}
+
+{% block content %}
+<div id="wrapper" class="clearfix" align='center'>
+	<h1>{{result}}</h1>
+	<div >
+		<form method='post'  enctype='multipart/form-data'>
+			<br>图片<br>
+		<input type='file' name='upload' size='40'/>
+		<br>评论<br>
+		<textarea rows="3" cols="40" name="info"></textarea>
+		<br>
+		<input type='submit' value='提交'/>
+	</form>
+	<div>
+</div>
+
+{% endblock %}
+
+
