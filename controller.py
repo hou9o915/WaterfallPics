@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from lib.bottle import Bottle,request,jinja2_template as template,static_file,debug
+from bottle import Bottle,request,jinja2_template as template,static_file,debug
 import settings
 from models import *
 app = Bottle()
@@ -12,7 +12,14 @@ def index(page='1'):
     page = int(page)
     entries = []
     
-    results = Picture.select().offset(page*10+1).limit(10)
+    results = Picture.raw('''SELECT * FROM Picture AS r1 JOIN
+        (SELECT ROUND(RAND() *
+        (SELECT MAX(id)
+        FROM Picture)) AS id)
+        AS r2
+        WHERE r1.id >= r2.id
+        ORDER BY r1.id ASC
+        LIMIT 10; ''')
     if  results is not None:
 	   for entry in results:
         	entries.append({'id':entry.id,'name':entry.img_url})
