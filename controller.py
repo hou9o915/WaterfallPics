@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from bottle import Bottle,request,jinja2_template as template,static_file,debug
+from bottle import Bottle,request,jinja2_template as template,static_file,debug,HTTPError
 import settings
 from models import *
 app = Bottle()
-debug(True)
+debug(False)
 @app.route('/')
 @app.route('/index')
 @app.route('/page/<page:re:[0-9]+>')
@@ -15,23 +15,29 @@ def index(page='1'):
     results = Picture.raw('''SELECT * FROM picture AS r1 JOIN
         (SELECT ROUND(RAND() *
         (SELECT MAX(id)
-        FROM picture)) AS id)
+        FROM picture)) AS _id)
         AS r2
-        WHERE r1.id >= r2.id
+        WHERE r1.id >= r2._id
         ORDER BY r1.id ASC
         LIMIT 10; ''')
-    if  results is not None:
-	   for entry in results:
-        	entries.append({'id':entry.id,'name':entry.img_url,"index":entry.index})
-        
-    return template("static/template/index.html",entries=entries,pagenavi=page)
+    if  results is None:
+        HTTPError(404, 'page not found')
+
+    for result in results:
+	strs = result.img_url.split('.')
+	strs[-2]+='_thumb'
+	result.img_url = '.'.join(strs)        
+    return template("static/template/index.html",entries=results,pagenavi=page)
 
 
-@app.route('/image/<index:re:[0-9]+>')
-def detail(index):
-    index = int(index)
+@app.route('/image/<id:re:[0-9]+>')
+def detail(id):
+    id = int(id)
 
-    entry = Picture.select().where(Picture.index == index).get()
+    try:
+        entry = Picture.select().where(Picture.id == id).get()
+    except Exception,e:
+        return HTTPError(404, 'page not found')
 
     return template("static/template/detail.html",entry=entry)
 

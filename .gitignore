@@ -38,3 +38,4 @@ config.yaml
 app.py
 test.py
 logs/a.log
+*.log
