@@ -12,10 +12,10 @@ def index(page='1'):
     page = int(page)
     entries = []
     
-    results = Picture.raw('''SELECT * FROM Picture AS r1 JOIN
+    results = Picture.raw('''SELECT * FROM picture AS r1 JOIN
         (SELECT ROUND(RAND() *
         (SELECT MAX(id)
-        FROM Picture)) AS _id)
+        FROM picture)) AS _id)
         AS r2
         WHERE r1.id >= r2._id
         ORDER BY r1.id ASC
@@ -23,9 +23,10 @@ def index(page='1'):
     if  results is None:
         HTTPError(404, 'page not found')
 
-    for i in results:
-        print i.index
-        
+    for result in results:
+	strs = result.img_url.split('.')
+	strs[-2]+='_thumb'
+	result.img_url = '.'.join(strs)        
     return template("static/template/index.html",entries=results,pagenavi=page)
 
 

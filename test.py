@@ -4,7 +4,7 @@ import re
 import urllib2,models
 
 
-for n in range(1,12000):
+for n in range(11661,18000):
 	url = "http://model.kdslife.com/show/photo/%d.html"%n
 	http = urllib2.urlopen(url)
 	try:
