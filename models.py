@@ -22,5 +22,4 @@ class Picture(BaseModel):
 
 if __name__ == '__main__':
     db.connect()
-    for p in Picture.select().offset(0).limit(10).desc():
-    	print p
+    Picture.create_table()
